@@ -77,18 +77,26 @@ const getCurrencies = async (req, res)=>{
 
     const wallet = await Wallet.findOne({user:uid});
 
-    const {id} = wallet
+    if(wallet){
+        const {id} = wallet
 
-    let currencie = await Currencie.find({wallet:id});
+        let currencie = await Currencie.find({wallet:id});
+        
+        //const prices = await getPrices(currencie);
+
+        //let newArray = currencie.concat(prices);
+
+        res.status(200).json({
+            ok:true,
+            currencie
+        })
+    }else{
+        res.status(404).json({
+            ok:false,
+            message: 'No existe la wallet'
+        })
+    }
     
-    //const prices = await getPrices(currencie);
-
-    //let newArray = currencie.concat(prices);
-
-    res.status(200).json({
-        ok:true,
-        currencie
-    })
 }
 
 module.exports = {
